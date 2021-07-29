@@ -25,7 +25,7 @@ public class StudentDB {
 		Connection connection = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/studentdb", "root", "Devops@321");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/studentdb", "root", "7866");
 			
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block			
@@ -118,4 +118,32 @@ public class StudentDB {
 		return status;	
 	}
 
+	public String deleteStudentDetails(int id) {
+		
+		Connection connection=null;
+		String status=null;
+		
+		try {
+			connection=getConnection();			
+			PreparedStatement ps=connection.prepareStatement("Delete from studentdb.student where id=?");
+			ps.setInt(1, id);
+			
+			int i=ps.executeUpdate();  
+			if (i>0) {
+			System.out.println(i+" records deleted"+id);  
+			status =  i+"records deleted WITH STUDENT ID :"+id;
+			} else {
+				System.out.println("unable to delete student record please verify the ID" +id);
+				status="unable to delete student record please verify the ID" +id;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		System.out.println("DB error:unable to delete student record please verify the ID" +id);
+		status="DB error:unable to delete student record please verify the ID" +id;
+		}
+		
+		return status;
+		
+	}
 }
